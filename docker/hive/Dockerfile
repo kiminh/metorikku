@@ -11,7 +11,7 @@ RUN wget -q https://archive.apache.org/dist/hadoop/common/hadoop-$HADOOP_VERSION
     && rm hadoop-$HADOOP_VERSION.tar.gz
 
 ENV HIVE_HOME=/opt/hive
-ENV HIVE_VERSION=1.2.2
+ENV HIVE_VERSION=2.3.1
 RUN wget -q https://archive.apache.org/dist/hive/hive-$HIVE_VERSION/apache-hive-$HIVE_VERSION-bin.tar.gz \
 	&& tar -xzf apache-hive-$HIVE_VERSION-bin.tar.gz \
 	&& mv apache-hive-$HIVE_VERSION-bin $HIVE_HOME \
@@ -21,10 +21,12 @@ ENV MYSQL_CONNECTOR_VERSION=5.1.47
 RUN wget -q https://repo1.maven.org/maven2/mysql/mysql-connector-java/$MYSQL_CONNECTOR_VERSION/mysql-connector-java-$MYSQL_CONNECTOR_VERSION.jar \
     && mv mysql-connector-java-$MYSQL_CONNECTOR_VERSION.jar $HIVE_HOME/lib
 
-ENV HUDI_VERSION=0.4.5
+ENV HUDI_VERSION=0.5.0-incubating
 RUN apt-get update && apt-get install -y ant 
-RUN wget -q https://repo1.maven.org/maven2/com/uber/hoodie/hoodie-hive-bundle/$HUDI_VERSION/hoodie-hive-bundle-$HUDI_VERSION.jar \
-    && mv hoodie-hive-bundle-$HUDI_VERSION.jar $HIVE_HOME/lib
+RUN wget -q https://repo1.maven.org/maven2/org/apache/hudi/hudi-hive-bundle/$HUDI_VERSION/hudi-hive-bundle-$HUDI_VERSION.jar \
+    && mv hudi-hive-bundle-$HUDI_VERSION.jar $HIVE_HOME/lib
+RUN wget -q https://repo1.maven.org/maven2/org/apache/hudi/hudi-hadoop-mr-bundle/$HUDI_VERSION/hudi-hadoop-mr-bundle-$HUDI_VERSION.jar \
+    && mv hudi-hadoop-mr-bundle-$HUDI_VERSION.jar $HIVE_HOME/lib
 RUN wget -q https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/$HADOOP_VERSION/hadoop-aws-$HADOOP_VERSION.jar \
     && mv hadoop-aws-$HADOOP_VERSION.jar $HIVE_HOME/lib
 

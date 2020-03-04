@@ -3,7 +3,7 @@ services:
   spark-submit:
     image: metorikku/metorikku
     environment:
-    - SUBMIT_COMMAND=spark-submit --conf spark.sql.warehouse.dir=/warehouse  --class com.yotpo.metorikku.Metorikku metorikku.jar -c examples/hive/movies.yaml
+    - SUBMIT_COMMAND=spark-submit  --conf spark.sql.catalogImplementation=hive --conf spark.sql.hive.convertMetastoreParquet=false --conf spark.sql.hive.metastore.jars=/opt/hive/lib/* --conf spark.sql.hive.metastore.version=2.3.1 --conf spark.sql.hive.version=2.3.1 --conf spark.sql.legacy.allowCreatingManagedTableUsingNonemptyLocation=true --conf spark.sql.warehouse.dir=/warehouse  --class com.yotpo.metorikku.Metorikku metorikku.jar -c examples/hive/movies.yaml
     - HIVE_METASTORE_URI=hive:9083
     entrypoint:
       - /scripts/entrypoint-submit.sh
@@ -16,7 +16,7 @@ services:
   hive-tester:
     image: metorikku/metorikku
     environment:
-      - SUBMIT_COMMAND=spark-submit --conf spark.sql.warehouse.dir=/warehouse  --class com.yotpo.metorikku.MetorikkuTester metorikku.jar --test-settings examples/hive/movies_test.yaml
+      - SUBMIT_COMMAND=spark-submit  --conf spark.sql.catalogImplementation=hive --conf spark.sql.hive.convertMetastoreParquet=false --conf spark.sql.hive.metastore.jars=/opt/hive/lib/* --conf spark.sql.hive.metastore.version=2.3.1 --conf spark.sql.hive.version=2.3.1 --conf spark.sql.legacy.allowCreatingManagedTableUsingNonemptyLocation=true --conf spark.sql.warehouse.dir=/warehouse  --class com.yotpo.metorikku.MetorikkuTester metorikku.jar --test-settings examples/hive/movies_test.yaml
       - HIVE_METASTORE_URI=hive:9083
     volumes:
       - ./output/:/examples/output/
